@@ -2,9 +2,8 @@
 
 Solución completa de gestión de tickets implementada en MongoDB. Diseñada para escalar a millones de registros con performance óptimo.
 
-[![MongoDB](https://img.shields.io/badge/MongoDB-5.0+-green.svg)](https://www.mongodb.com/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
 ---
 
 ## 📋 Descripción
