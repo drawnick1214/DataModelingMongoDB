@@ -1,89 +1,89 @@
-# 🎫 Sistema de Tickets - MongoDB
+# 🎫 Ticket System - MongoDB
 
-Solución completa de gestión de tickets implementada en MongoDB. Diseñada para escalar a millones de registros con performance óptimo.
+A complete ticket management solution built with MongoDB. Designed to scale to millions of records with optimal performance.
 
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)
 ---
 
-## 📋 Descripción
+## 📋 Description
 
-Sistema de ticketing con soporte para:
-- ✅ Estados dinámicos (open, in_progress, closed)
-- ✅ Clasificadores jerárquicos multinivel
-- ✅ Histórico completo inmutable
-- ✅ Filtros combinables (fechas, estado, clasificadores)
-- ✅ 5 consultas principales optimizadas
-- ✅ Performance sub-segundo en millones de registros
+Ticketing system with support for:
+- ✅ Dynamic states (open, in_progress, closed)
+- ✅ Multi-level hierarchical classifiers
+- ✅ Complete immutable history
+- ✅ Combinable filters (dates, state, classifiers)
+- ✅ 5 optimized main queries
+- ✅ Sub-second performance on millions of records
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerrequisitos
+### Prerequisites
 
-- MongoDB 5.0 o superior
+- MongoDB 5.0 or higher
 - MongoDB Shell (mongosh)
 
-### Instalación
+### Installation
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Clone the repository
 git clone https://github.com/tu-usuario/capta-tickets-solution.git
 cd capta-tickets-solution
 
-# 2. Crear colecciones con validación
+# 2. Create collections with validation
 mongosh < mongodb/01-create-collections.js
 
-# 3. Crear índices optimizados
+# 3. Create optimized indexes
 mongosh < mongodb/02-create-indexes.js
 
-# 4. Cargar datos de ejemplo (100 tickets)
+# 4. Load sample data (100 tickets)
 mongosh < mongodb/03-seed-data.js
 
-# 5. Probar las consultas
+# 5. Test the queries
 mongosh < examples/query-examples.js
 ```
 
 ---
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
 capta-tickets-solution/
 │
-├── 📄 README.md                     # Este archivo
+├── 📄 README.md                     # This file
 ├── 📁 docs/
-│   └── solucion-tecnica.md          # Documentación técnica completa
+│   └── solucion-tecnica.md          # Complete technical documentation
 ├── 📁 mongodb/
-│   ├── 01-create-collections.js     # Crea colecciones con validación
-│   ├── 02-create-indexes.js         # Crea 10 índices optimizados
-│   ├── 03-seed-data.js              # Datos de ejemplo (100 tickets)
-│   └── 04-queries.js                # 5 consultas principales
+│   ├── 01-create-collections.js     # Creates collections with validation
+│   ├── 02-create-indexes.js         # Creates 10 optimized indexes
+│   ├── 03-seed-data.js              # Sample data (100 tickets)
+│   └── 04-queries.js                # 5 main queries
 └── 📁 examples/
-    └── query-examples.js            # Ejemplos de uso
+    └── query-examples.js            # Usage examples
 ```
 
 ---
 
-## 🗄️ Modelo de Datos
+## 🗄️ Data Model
 
-### Colecciones
+### Collections
 
-**1. `classifiers`** - Catálogo de clasificadores jerárquicos
+**1. `classifiers`** - Hierarchical classifier catalog
 ```javascript
 {
   _id: "area_mantenimiento",
-  name: "Área de Mantenimiento",
+  name: "Maintenance Area",
   root_id: "servicios",
   parent_id: "servicios",
-  path: ["servicios", "area_mantenimiento"],  // Clave para búsquedas jerárquicas
+  path: ["servicios", "area_mantenimiento"],  // Key for hierarchical searches
   level: 1,
   is_leaf: false
 }
 ```
 
-**2. `tickets`** - Estado actual de cada ticket
+**2. `tickets`** - Current state of each ticket
 ```javascript
 {
   _id: ObjectId("..."),
@@ -92,7 +92,7 @@ capta-tickets-solution/
   current_classification: {
     root_id: "servicios",
     node_id: "area_mantenimiento",
-    path: ["servicios", "area_mantenimiento"]  // Denormalizado para performance
+    path: ["servicios", "area_mantenimiento"]  // Denormalized for performance
   },
   created_at: ISODate("2025-01-15T10:30:00Z"),
   closed_at: null,
@@ -100,7 +100,7 @@ capta-tickets-solution/
 }
 ```
 
-**3. `ticket_history`** - Histórico inmutable de acciones
+**3. `ticket_history`** - Immutable action history
 ```javascript
 {
   _id: ObjectId("..."),
@@ -118,10 +118,10 @@ capta-tickets-solution/
 
 ---
 
-## 🔍 Consultas Principales
+## 🔍 Main Queries
 
-### 1. Lista de Casos
-Obtener tickets con filtros combinables.
+### 1. Case List
+Retrieve tickets with combinable filters.
 
 ```javascript
 load('mongodb/04-queries.js')
@@ -136,8 +136,8 @@ await getTickets({
 })
 ```
 
-### 2. Cantidad de Reaperturas
-Conteo de tickets que pasaron de `closed` a `open`.
+### 2. Reopening Count
+Count of tickets that transitioned from `closed` to `open`.
 
 ```javascript
 await countReopenings({
@@ -147,8 +147,8 @@ await countReopenings({
 })
 ```
 
-### 3. Cantidad de Ingresos
-Tickets creados durante el período.
+### 3. Intake Count
+Tickets created during the period.
 
 ```javascript
 await countTicketIngresos({
@@ -157,8 +157,8 @@ await countTicketIngresos({
 })
 ```
 
-### 4. Cantidad de Cierres
-Tickets cerrados durante el período.
+### 4. Closure Count
+Tickets closed during the period.
 
 ```javascript
 await countTicketCierres({
@@ -167,8 +167,8 @@ await countTicketCierres({
 })
 ```
 
-### 5. Lista de Acciones
-Histórico de acciones con filtros.
+### 5. Action List
+Action history with filters.
 
 ```javascript
 await getTicketActions({
@@ -182,155 +182,155 @@ await getTicketActions({
 
 ---
 
-## 📊 Índices
+## 📊 Indexes
 
-Sistema optimizado con 10 índices estratégicos:
+System optimized with 10 strategic indexes:
 
-### Tickets (6 índices)
-- `ticket_number` (unique) - Búsqueda directa
-- `current_state` - Filtro por estado
-- `created_at, closed_at` - Rango de fechas
-- `current_classification.path` - Filtro jerárquico
-- `current_classification.node_id` - Nodo específico
-- **Compuesto (4 campos)** - Query principal optimizada
+### Tickets (6 indexes)
+- `ticket_number` (unique) - Direct lookup
+- `current_state` - State filter
+- `created_at, closed_at` - Date range
+- `current_classification.path` - Hierarchical filter
+- `current_classification.node_id` - Specific node
+- **Compound (4 fields)** - Optimized main query
 
-### Ticket History (3 índices)
-- `ticket_id, timestamp` - Histórico por ticket
-- `action_type, timestamp` - Métricas agregadas
-- `timestamp` - Limpieza de datos
+### Ticket History (3 indexes)
+- `ticket_id, timestamp` - History per ticket
+- `action_type, timestamp` - Aggregated metrics
+- `timestamp` - Data cleanup
 
-### Classifiers (2 índices)
-- `root_id, parent_id` - Navegación jerárquica
-- `path` - Búsqueda de descendientes
+### Classifiers (2 indexes)
+- `root_id, parent_id` - Hierarchical navigation
+- `path` - Descendant search
 
-**Performance:** < 200ms en 1M tickets con índices correctamente configurados.
-
----
-
-## 🎯 Características
-
-### ✅ Filtros Implementados
-
-- **Rango de fechas:** Tickets abiertos o en gestión durante `[startDate, endDate)`
-- **Estado del caso:** Actual o histórico (estado al final del período)
-- **Clasificadores jerárquicos:** Búsqueda inclusiva de descendientes
-
-### ✅ Diseño Escalable
-
-- Separación de estado actual vs histórico
-- Denormalización controlada del `path` jerárquico
-- Índices compuestos para queries complejas
-- Soporte para millones de tickets
-
-### ✅ Histórico Completo
-
-- Trazabilidad total de cambios
-- Auditoría inmutable
-- Reconstrucción de estado en cualquier momento
+**Performance:** < 200ms on 1M tickets with properly configured indexes.
 
 ---
 
-## 🧪 Datos de Ejemplo
+## 🎯 Features
 
-El script `03-seed-data.js` genera:
+### ✅ Implemented Filters
 
-- **8 clasificadores** en jerarquía de 3 niveles
-- **100 tickets** con estados variados:
-  - ~10 abiertos
-  - ~20 en progreso
-  - ~70 cerrados
-- **300+ acciones** en el histórico
-- **10 reaperturas** simuladas
-- Datos distribuidos en enero-febrero 2025
+- **Date range:** Tickets open or in progress during `[startDate, endDate)`
+- **Case state:** Current or historical (state at end of period)
+- **Hierarchical classifiers:** Inclusive descendant search
 
----
+### ✅ Scalable Design
 
-## 📖 Documentación
+- Separation of current state vs history
+- Controlled denormalization of the hierarchical `path`
+- Compound indexes for complex queries
+- Support for millions of tickets
 
-### Documento Técnico Completo
+### ✅ Complete History
 
-Ver [`docs/DocumentoTecnicoModeladoDatosTickets.pdf`](docs/DocumentoTecnicoModeladoDatosTickets.pdf) para:
-
-- ✅ Análisis detallado del dominio
-- ✅ Justificación de decisiones de diseño
-- ✅ Explicación de índices y performance
-- ✅ Implementación de consultas
-- ✅ Dificultades y limitaciones
-- ✅ Consultas extras de valor agregado
-
-### Ejemplos de Uso
-
-Ver [`examples/query-examples.js`](examples/query-examples.js) para casos de uso prácticos.
+- Full change traceability
+- Immutable audit trail
+- State reconstruction at any point in time
 
 ---
 
-## 🛠️ Uso Avanzado
+## 🧪 Sample Data
 
-### Consultar datos interactivamente
+The `03-seed-data.js` script generates:
+
+- **8 classifiers** in a 3-level hierarchy
+- **100 tickets** with varied states:
+  - ~10 open
+  - ~20 in progress
+  - ~70 closed
+- **300+ actions** in the history
+- **10 simulated reopenings**
+- Data distributed across January-February 2025
+
+---
+
+## 📖 Documentation
+
+### Complete Technical Document
+
+See [`docs/DocumentoTecnicoModeladoDatosTickets.pdf`](docs/DocumentoTecnicoModeladoDatosTickets.pdf) for:
+
+- ✅ Detailed domain analysis
+- ✅ Design decision rationale
+- ✅ Index and performance explanation
+- ✅ Query implementation
+- ✅ Difficulties and limitations
+- ✅ Additional value-added queries
+
+### Usage Examples
+
+See [`examples/query-examples.js`](examples/query-examples.js) for practical use cases.
+
+---
+
+## 🛠️ Advanced Usage
+
+### Query data interactively
 
 ```bash
-# Abrir MongoDB Shell
+# Open MongoDB Shell
 mongosh capta_tickets_db
 
-# Cargar funciones
+# Load functions
 load('mongodb/04-queries.js')
 
-# Ejecutar consultas personalizadas
-await getTickets({ 
-  state: "open", 
-  page: 1, 
-  pageSize: 10 
+# Run custom queries
+await getTickets({
+  state: "open",
+  page: 1,
+  pageSize: 10
 })
 ```
 
-### Verificar performance
+### Verify performance
 
 ```javascript
-// Ver plan de ejecución
+// View execution plan
 db.tickets.find({ current_state: "open" }).explain("executionStats")
 
-// Verificar que use índice (buscar "IXSCAN" en el output)
-// Si dice "COLLSCAN" el índice no se está usando
+// Verify that an index is used (look for "IXSCAN" in the output)
+// If it says "COLLSCAN", the index is not being used
 ```
 
-### Ver estadísticas
+### View statistics
 
 ```javascript
-// Estadísticas de la colección
+// Collection statistics
 db.tickets.stats()
 
-// Uso de índices
+// Index usage
 db.tickets.aggregate([{ $indexStats: {} }])
 
-// Tamaño de índices
+// Index sizes
 db.tickets.stats().indexSizes
 ```
 
 ---
 
-## 📝 Licencia
+## 📝 License
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 👤 Autor
+## 👤 Author
 
-**Nick Díaz**
+**Nick Diaz**
 
-- LinkedIn: [tu-perfil]([https://linkedin.com/in/tu-perfil](https://www.linkedin.com/in/drawnick991214/))
-- GitHub: [@tu-usuario]([https://github.com/tu-usuario](https://github.com/drawnick1214))
+- LinkedIn: [Nick Diaz](https://www.linkedin.com/in/drawnick991214/)
+- GitHub: [@drawnick1214](https://github.com/drawnick1214)
 - Email: enickdiazc@gmail.com
 
 ---
 
-## 🙏 Agradecimientos
+## 🙏 Acknowledgments
 
-- Gracias por la oportunidad de resolver este desafío técnico
+- Thanks for the opportunity to solve this technical challenge
 
 ---
 
-## 📚 Referencias
+## 📚 References
 
 - [MongoDB Documentation](https://docs.mongodb.com/)
 - [MongoDB Schema Design Patterns](https://www.mongodb.com/blog/post/building-with-patterns-a-summary)
